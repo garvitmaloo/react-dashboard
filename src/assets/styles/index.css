@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .text-form-input {
+    @apply w-full p-2 my-2 outline-none border-b-2 bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-500 focus:border-gray-950 dark:focus:border-gray-50 transition-all duration-200;
+  }
+
+  .form-input-error {
+    @apply rounded-md p-3 bg-red-100 text-red-800 max-w-full mb-5 ring-2 ring-red-300 break-words;
+  }
+}

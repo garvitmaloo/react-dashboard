@@ -29,12 +29,14 @@
     "react/no-danger": "error",
     "react/jsx-no-target-blank": "error",
     "react/jsx-no-script-url": "error",
-    "react/jsx-props-no-spreading": "error",
+    "react/jsx-props-no-spreading": "off",
     "react-hooks/exhaustive-deps": "warn",
     "react/default-props-match-prop-types": "error",
     "react/no-unused-prop-types": "error",
     "react/no-unknown-property": "error",
     "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "react/require-default-props": "off",
+    "react/jsx-boolean-value": "off"
   }
 }
