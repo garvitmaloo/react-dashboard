@@ -10,4 +10,40 @@
   .form-input-error {
     @apply rounded-md p-3 bg-red-100 text-red-800 max-w-full mb-5 ring-2 ring-red-300 break-words;
   }
+
+  .side-nav-links {
+    @apply p-2 rounded flex items-center gap-3 text-gray-300 hover:text-gray-50 hover:bg-gray-500 transition-all duration-200;
+  }
+
+  .side-nav-links.active {
+    @apply bg-gray-500 text-gray-50;
+  }
+
+  .mobile-sidenav {
+    animation: close-mobile-sidenav 200ms linear;
+    animation-fill-mode: both;
+  }
+
+  .mobile-sidenav-open {
+    animation: open-mobile-sidenav 200ms linear;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes open-mobile-sidenav {
+    from {
+      transform: translateX(-275px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes close-mobile-sidenav {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-275px);
+    }
+  }
 }

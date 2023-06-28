@@ -3,6 +3,10 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: "class",
   theme: {
+    screens: {
+      tablets: "700px",
+      desktop: "1250px"
+    },
     extend: {
       colors: {
         // Text - gray-50, gray-300, gray-500 and gray-950

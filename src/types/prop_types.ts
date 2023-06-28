@@ -3,16 +3,14 @@ export interface FormSubmitBtnProps {
   additionalStyles?: string[];
 }
 
-export interface TextFormInputProps {
-  inputType: string;
-  inputRef: React.Ref<HTMLInputElement>;
-  placeholderText: string;
-  isRequired: boolean;
-  uniqueIdentifier: string;
-}
-
 export interface PrimaryButtonProps {
   btnText: string;
   additionalStyles?: string[];
   clickHandler?: () => unknown;
+}
+
+export interface IconButtonProps {
+  btnIcon: React.ReactElement;
+  additionalStyles?: string[];
+  clickHandler: () => unknown;
 }
