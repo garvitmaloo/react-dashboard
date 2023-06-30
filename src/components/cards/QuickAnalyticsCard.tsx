@@ -28,17 +28,19 @@ export default function QuickAnalyticsCard({
           </span>
         )}
       </div>
-      <div className="my-5">
-        {increment ? (
-          <span className="px-2 py-1 text-sm bg-green-100 rounded text-gray-950">
-            <b>{increment}%</b> increment
-          </span>
-        ) : (
-          <span className="px-2 py-1 text-sm bg-red-100 rounded text-gray-950">
-            <b>{decrement}%</b> decrement
-          </span>
-        )}
-      </div>
+      {(increment || decrement) && (
+        <div className="my-5">
+          {increment ? (
+            <span className="px-2 py-1 text-sm bg-green-100 rounded text-gray-950">
+              <b>{increment}%</b> increment
+            </span>
+          ) : (
+            <span className="px-2 py-1 text-sm bg-red-100 rounded text-gray-950">
+              <b>{decrement}%</b> decrement
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
