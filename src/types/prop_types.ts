@@ -14,3 +14,38 @@ export interface IconButtonProps {
   additionalStyles?: string[];
   clickHandler: () => unknown;
 }
+
+export interface QuickAnalyticsCardProps {
+  cardTitle: string;
+  cardIcon: React.ReactElement;
+  analyticValue: number;
+  valueUnit?: string;
+  increment?: number;
+  decrement?: number;
+}
+
+export interface AdvancedAnalyticsCardProps {
+  cardTitle: string;
+  cardSubtitle?: string;
+  AnalyticsComponent?: React.ReactElement;
+  customStyles?: string[];
+}
+
+export interface AreaGraphProps {
+  graphData: any[];
+  areaFillColor: string;
+  XAxisKey: string;
+  YAxisKey: string;
+  graphHeight?: string | number;
+  graphWidth?: string | number;
+}
+
+export interface PieGraphProps {
+  colors: string[];
+  graphData: any[];
+  graphWidth?: number | string;
+  graphHeight?: number | string;
+  nameKey: string;
+  dataKey: string;
+  graphDetails?: React.ReactElement;
+}
