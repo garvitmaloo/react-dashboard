@@ -78,3 +78,8 @@ export interface ProductsDetails {
 export type ProductCardProps = {
   productDetails: ProductsDetails;
 };
+
+export interface ModalProps {
+  onClose: (val: boolean) => void;
+  isModalOpen: boolean;
+}

@@ -1,9 +1,16 @@
+import { useState } from "react";
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import ProductsCard from "../components/cards/ProductsCard";
 import MultipleSelect from "../components/input/MultipleSelect";
 import { DUMMY_PRODUCTS_DATA } from "../data/DUMMY_DATA";
+import BasicModal from "../components/modal/AddProductFormModal";
 
 export default function AllProductsPage() {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const modalCloseHandler = (value: boolean) => {
+    setIsModalOpen(value);
+  };
+
   return (
     <div>
       <div className="flex flex-col tablets:flex-row justify-between items-center gap-2">
@@ -11,10 +18,10 @@ export default function AllProductsPage() {
           Showing all products
         </h3>
         <div className="flex flex-col tablets:flex-row gap-2 items-end">
-          <MultipleSelect />
+          <MultipleSelect width={200} />
           <PrimaryBtn
             btnText="Add New Product"
-            clickHandler={() => console.log("Clicked")}
+            clickHandler={() => setIsModalOpen(true)}
             additionalStyles={[
               "self-stretch",
               "mt-2",
@@ -30,6 +37,10 @@ export default function AllProductsPage() {
           <ProductsCard key={product.productId} productDetails={product} />
         ))}
       </section>
+
+      {isModalOpen && (
+        <BasicModal isModalOpen={isModalOpen} onClose={modalCloseHandler} />
+      )}
     </div>
   );
 }

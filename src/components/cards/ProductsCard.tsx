@@ -15,7 +15,7 @@ export default function ProductsCard({ productDetails }: ProductCardProps) {
 
   return (
     <div
-      className="rounded shadow-md my-5 grow shrink-0 basis-[300px] cursor-pointer max-w-[400px]"
+      className="rounded shadow-md dark:shadow-gray-800 my-5 grow shrink-0 basis-[300px] cursor-pointer max-w-[400px]"
       onClick={() => navigate(`/products/${productDetails.productId}`)}
     >
       <img

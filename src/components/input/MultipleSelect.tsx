@@ -33,7 +33,7 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
   };
 }
 
-export default function MultipleSelect() {
+export default function MultipleSelect({ width = "100%", valueChange }: any) {
   const theme = useTheme();
   const [category, setCategory] = React.useState<string[]>([]);
 
@@ -45,20 +45,15 @@ export default function MultipleSelect() {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
+
+    valueChange(value);
   };
 
   return (
     <div className="text-gray-500 dark:text-gray-300">
-      <FormControl
-        sx={{
-          m: 1,
-          mb: 0,
-          width: 200
-        }}
-      >
+      <FormControl sx={{ mt: 1, width }}>
         <Select
-          className="dark:border-2 dark:border-gray-100 rounded-lg outline-none"
-          multiple
+          className="dark:border-2 dark:border-gray-100 rounded-lg outline-none w-full"
           displayEmpty
           value={category}
           onChange={handleChange}
