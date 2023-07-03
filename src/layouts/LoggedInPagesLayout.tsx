@@ -18,7 +18,7 @@ function LoggedInPagesLayout(): JSX.Element {
   return (
     <div className="flex h-screen">
       <aside
-        className={`fixed desktop:static top-0 left-0 z-40 desktop:block grow-0 w-[275px] h-full ${
+        className={`fixed desktop:static top-0 left-0 z-40 desktop:block grow-0 w-[275px] h-full shrink-0 ${
           isSidebarOpen
             ? "mobile-sidenav-open"
             : viewportWidth <= 1250
