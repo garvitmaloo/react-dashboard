@@ -65,3 +65,16 @@ export interface OrdersTableData {
   deliveryLocation: string;
   totalItems: number;
 }
+
+export interface ProductsDetails {
+  productId: string;
+  imageUrl: string;
+  discount?: number;
+  originalPrice: number;
+  productTitle: string;
+  category: "Clothing" | "Footwear" | "Accessories" | "Gadgets" | "Utilities";
+}
+
+export type ProductCardProps = {
+  productDetails: ProductsDetails;
+};
