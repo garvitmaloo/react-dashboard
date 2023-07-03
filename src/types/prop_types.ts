@@ -13,6 +13,7 @@ export interface IconButtonProps {
   btnIcon: React.ReactElement;
   additionalStyles?: string[];
   clickHandler: () => unknown;
+  rest?: any;
 }
 
 export interface QuickAnalyticsCardProps {
@@ -48,4 +49,19 @@ export interface PieGraphProps {
   nameKey: string;
   dataKey: string;
   graphDetails?: React.ReactElement;
+}
+
+export interface AdvancedTableProps<T> {
+  data: T[];
+  columns: any[];
+  customTableStyles?: any;
+}
+
+export interface OrdersTableData {
+  orderId: string;
+  orderStatus: "pending" | "fulfilled" | "returned";
+  orderAmount: number;
+  userDetails: string;
+  deliveryLocation: string;
+  totalItems: number;
 }
