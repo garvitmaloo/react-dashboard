@@ -55,12 +55,20 @@ export default function BasicTabs() {
           aria-label="basic tabs example"
           sx={{ overflow: "auto" }}
         >
-          <Tab label="January" {...a11yProps(0)} />
-          <Tab label="February" {...a11yProps(1)} />
-          <Tab label="March" {...a11yProps(2)} />
-          <Tab label="April" {...a11yProps(3)} />
-          <Tab label="May" {...a11yProps(4)} />
-          <Tab label="June" {...a11yProps(5)} />
+          <Tab
+            className="dark:text-gray-50"
+            label="January"
+            {...a11yProps(0)}
+          />
+          <Tab
+            className="dark:text-gray-50"
+            label="February"
+            {...a11yProps(1)}
+          />
+          <Tab className="dark:text-gray-50" label="March" {...a11yProps(2)} />
+          <Tab className="dark:text-gray-50" label="April" {...a11yProps(3)} />
+          <Tab className="dark:text-gray-50" label="May" {...a11yProps(4)} />
+          <Tab className="dark:text-gray-50" label="June" {...a11yProps(5)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
