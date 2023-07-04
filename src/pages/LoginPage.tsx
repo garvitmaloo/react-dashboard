@@ -1,18 +1,47 @@
-// import { useRef } from "react";
+/* eslint-disable import/no-extraneous-dependencies */
 import { useForm, SubmitHandler } from "react-hook-form";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import FormSubmitBtn from "../components/button/FormSubmitBtn";
 import { LoginFormTypes } from "../types/hook_types";
+import { User, setUser } from "../store/userSlice";
 
 function LoginPage(): JSX.Element {
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
     formState: { errors }
   } = useForm<LoginFormTypes>();
+  const dispatch = useDispatch();
 
-  const submitLoginForm: SubmitHandler<LoginFormTypes> = (data) => {
-    console.log(data);
+  const submitLoginForm: SubmitHandler<LoginFormTypes> = async (data) => {
+    try {
+      const response = await axios.post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`,
+        { email: data.email, password: data.password, returnSecureToken: true }
+      );
+
+      if (response.data) {
+        const loggedInData: User = {
+          ...response.data,
+          role: data.email === "admin@shop.com" ? "Admin" : "Subadmin"
+        };
+        localStorage.setItem("loggedInUserData", JSON.stringify(loggedInData));
+        dispatch(setUser(loggedInData));
+
+        navigate("/");
+        window.location.reload(); // this is needed to refresh the app and reload the app.tsx component for routes to work
+      } else {
+        // Handle situation
+        console.log("Unable to fetch user data");
+      }
+    } catch (err: any) {
+      // Handle Error
+      console.log(err);
+    }
   };
 
   return (
@@ -31,21 +60,12 @@ function LoginPage(): JSX.Element {
       >
         <input
           required
-          type="text"
-          placeholder="Enter username"
+          type="email"
+          placeholder="Enter email"
           className="text-form-input"
           autoComplete="off"
-          {...register("username", {
-            pattern: {
-              value: /^(?!\.)[^@]*$/,
-              message:
-                "Username cannot start with '.' and should not contain '@'"
-            }
-          })}
+          {...register("email")}
         />
-        {errors.username && (
-          <p className="form-input-error">{errors.username.message}</p>
-        )}
         <input
           required
           type="password"

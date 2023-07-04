@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import ProductsCard from "../components/cards/ProductsCard";
 import MultipleSelect from "../components/input/MultipleSelect";
@@ -7,6 +9,8 @@ import BasicModal from "../components/modal/AddProductFormModal";
 
 export default function AllProductsPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const loggedInUser = useSelector((state: any) => state.user);
+
   const modalCloseHandler = (value: boolean) => {
     setIsModalOpen(value);
   };
@@ -19,16 +23,18 @@ export default function AllProductsPage() {
         </h3>
         <div className="flex flex-col tablets:flex-row gap-2 items-end">
           <MultipleSelect width={200} />
-          <PrimaryBtn
-            btnText="Add New Product"
-            clickHandler={() => setIsModalOpen(true)}
-            additionalStyles={[
-              "self-stretch",
-              "mt-2",
-              "bg-theme-yellow",
-              "text-gray-950"
-            ]}
-          />
+          {loggedInUser.role === "Admin" && (
+            <PrimaryBtn
+              btnText="Add New Product"
+              clickHandler={() => setIsModalOpen(true)}
+              additionalStyles={[
+                "self-stretch",
+                "mt-2",
+                "bg-theme-yellow",
+                "text-gray-950"
+              ]}
+            />
+          )}
         </div>
       </div>
 

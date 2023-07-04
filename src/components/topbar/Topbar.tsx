@@ -11,11 +11,17 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import { setUser } from "../../store/userSlice";
 
 const pages = ["Notifications", "Messages", "Trends", "Company", "Requests"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Topbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -34,12 +40,18 @@ function Topbar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (settingText: string) => {
     setAnchorElUser(null);
+
+    if (settingText === "Logout") {
+      localStorage.removeItem("loggedInUserData");
+      dispatch(setUser(null));
+      navigate("/login");
+    }
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" style={{ zIndex: 1000 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters style={{ justifyContent: "space-between" }}>
           <Typography
@@ -163,7 +175,10 @@ function Topbar() {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem
+                    key={setting}
+                    onClick={() => handleCloseUserMenu(setting)}
+                  >
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
