@@ -42,7 +42,6 @@ export interface AreaGraphProps {
 }
 
 export interface PieGraphProps {
-  colors: string[];
   graphData: any[];
   graphWidth?: number | string;
   graphHeight?: number | string;
@@ -82,4 +81,21 @@ export type ProductCardProps = {
 export interface ModalProps {
   onClose: (val: boolean) => void;
   isModalOpen: boolean;
+}
+
+export interface OrdersAnalyticsData {
+  date: string;
+  orders: number;
+}
+
+export interface SalesAnalyticsData {
+  january: { date: string; sales: number }[];
+  february: { date: string; sales: number }[];
+  march: { date: string; sales: number }[];
+}
+
+export interface UserDemographicsData {
+  title: string;
+  color: string;
+  value: number;
 }

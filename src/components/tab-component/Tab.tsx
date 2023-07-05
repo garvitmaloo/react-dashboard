@@ -2,9 +2,12 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import AreaGraph from "../area-graph/AreaGraph";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-import { DUMMY_SALES_DATA } from "../../data/DUMMY_DATA";
+import AreaGraph from "../area-graph/AreaGraph";
+// import { DUMMY_SALES_DATA } from "../../data/DUMMY_DATA";
+import { SalesAnalyticsData } from "../../types/prop_types";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -40,7 +43,21 @@ function a11yProps(index: number) {
 }
 
 export default function BasicTabs() {
+  let salesData: SalesAnalyticsData | null = null;
   const [value, setValue] = React.useState(0);
+  const salesDataQuery = useQuery({
+    queryKey: ["Sales"],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_FIREBASE_DATA_URL}/analytics.json`
+      );
+      return response.data;
+    }
+  });
+
+  if (salesDataQuery.data) {
+    salesData = salesDataQuery.data.sales;
+  }
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -66,58 +83,37 @@ export default function BasicTabs() {
             {...a11yProps(1)}
           />
           <Tab className="dark:text-gray-50" label="March" {...a11yProps(2)} />
-          <Tab className="dark:text-gray-50" label="April" {...a11yProps(3)} />
-          <Tab className="dark:text-gray-50" label="May" {...a11yProps(4)} />
-          <Tab className="dark:text-gray-50" label="June" {...a11yProps(5)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <AreaGraph
-          graphData={DUMMY_SALES_DATA.january}
-          areaFillColor="#0EA5E9"
-          XAxisKey="date"
-          YAxisKey="sales"
-        />
+        {salesData && (
+          <AreaGraph
+            graphData={salesData!.january}
+            areaFillColor="#0EA5E9"
+            XAxisKey="date"
+            YAxisKey="sales"
+          />
+        )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <AreaGraph
-          graphData={DUMMY_SALES_DATA.february}
-          areaFillColor="#0EA5E9"
-          XAxisKey="date"
-          YAxisKey="sales"
-        />
+        {salesData && (
+          <AreaGraph
+            graphData={salesData!.february}
+            areaFillColor="#0EA5E9"
+            XAxisKey="date"
+            YAxisKey="sales"
+          />
+        )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <AreaGraph
-          graphData={DUMMY_SALES_DATA.march}
-          areaFillColor="#0EA5E9"
-          XAxisKey="date"
-          YAxisKey="sales"
-        />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <AreaGraph
-          graphData={DUMMY_SALES_DATA.april}
-          areaFillColor="#0EA5E9"
-          XAxisKey="date"
-          YAxisKey="sales"
-        />
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        <AreaGraph
-          graphData={DUMMY_SALES_DATA.may}
-          areaFillColor="#0EA5E9"
-          XAxisKey="date"
-          YAxisKey="sales"
-        />
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        <AreaGraph
-          graphData={DUMMY_SALES_DATA.june}
-          areaFillColor="#0EA5E9"
-          XAxisKey="date"
-          YAxisKey="sales"
-        />
+        {salesData && (
+          <AreaGraph
+            graphData={salesData!.march}
+            areaFillColor="#0EA5E9"
+            XAxisKey="date"
+            YAxisKey="sales"
+          />
+        )}
       </TabPanel>
     </Box>
   );

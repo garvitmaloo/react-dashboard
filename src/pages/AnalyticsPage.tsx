@@ -1,18 +1,35 @@
+import React from "react";
 import { FaCartShopping, FaUsers, FaCoins } from "react-icons/fa6";
 import { FaMoneyCheckAlt } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import QuickAnalyticsCard from "../components/cards/QuickAnalyticsCard";
 import AdvancedAnalyticsCard from "../components/cards/AdvancedAnalyticsCard";
 import AreaGraph from "../components/area-graph/AreaGraph";
 import PieGraph from "../components/area-graph/PieGraph";
 import Tab from "../components/tab-component/Tab";
-import {
-  DUMMY_AREA_GRAPH_DATA,
-  DUMMY_CIRCULAR_GRAPH_DATA,
-  CIRCULAR_GRAPH_COLORS
-} from "../data/DUMMY_DATA";
+import { OrdersAnalyticsData, UserDemographicsData } from "../types/prop_types";
 
 function AnalyticsPage(): JSX.Element {
+  let ordersAnalyticsData: OrdersAnalyticsData[] = [];
+  let userDemographicsData: UserDemographicsData[] = [];
+
+  const analyticsQuery = useQuery({
+    queryKey: ["analytics"],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_FIREBASE_DATA_URL}/analytics.json`
+      );
+
+      return response.data;
+    }
+  });
+
+  if (analyticsQuery.data) {
+    ordersAnalyticsData = analyticsQuery.data.orders;
+    userDemographicsData = analyticsQuery.data.userDemographics;
+  }
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-950 dark:text-gray-50">
       <section id="quick-analytics" className="pt-5">
@@ -63,7 +80,7 @@ function AnalyticsPage(): JSX.Element {
             customStyles={["grow"]}
             AnalyticsComponent={
               <AreaGraph
-                graphData={DUMMY_AREA_GRAPH_DATA}
+                graphData={ordersAnalyticsData}
                 areaFillColor="#0EA5E9"
                 XAxisKey="date"
                 YAxisKey="orders"
@@ -80,8 +97,7 @@ function AnalyticsPage(): JSX.Element {
             ]}
             AnalyticsComponent={
               <PieGraph
-                graphData={DUMMY_CIRCULAR_GRAPH_DATA}
-                colors={CIRCULAR_GRAPH_COLORS}
+                graphData={userDemographicsData}
                 nameKey="title"
                 dataKey="value"
               />
@@ -91,7 +107,7 @@ function AnalyticsPage(): JSX.Element {
 
         <AdvancedAnalyticsCard
           cardTitle="Month-wise sales"
-          cardSubtitle="Detailed sales data since last 6 months"
+          cardSubtitle="Detailed sales data since last 3 months"
           AnalyticsComponent={<Tab />}
         />
       </section>
