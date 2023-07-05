@@ -1,19 +1,35 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import ProductsCard from "../components/cards/ProductsCard";
 import MultipleSelect from "../components/input/MultipleSelect";
-import { DUMMY_PRODUCTS_DATA } from "../data/DUMMY_DATA";
 import BasicModal from "../components/modal/AddProductFormModal";
+import { ProductsDetails } from "../types/prop_types";
 
 export default function AllProductsPage() {
+  let allProducts: ProductsDetails[] = [];
+  const productsQuery = useQuery({
+    queryKey: ["Products"],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_FIREBASE_DATA_URL}/products.json`
+      );
+      return response.data;
+    }
+  });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const loggedInUser = useSelector((state: any) => state.user);
 
   const modalCloseHandler = (value: boolean) => {
     setIsModalOpen(value);
   };
+
+  if (productsQuery.data) {
+    allProducts = productsQuery.data;
+  }
 
   return (
     <div>
@@ -39,7 +55,7 @@ export default function AllProductsPage() {
       </div>
 
       <section className="flex gap-12 justify-evenly my-6 flex-wrap">
-        {DUMMY_PRODUCTS_DATA.map((product) => (
+        {allProducts.map((product) => (
           <ProductsCard key={product.productId} productDetails={product} />
         ))}
       </section>
