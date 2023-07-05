@@ -81,6 +81,7 @@ export type ProductCardProps = {
 export interface ModalProps {
   onClose: (val: boolean) => void;
   isModalOpen: boolean;
+  productFormData?: ProductsDetails;
 }
 
 export interface OrdersAnalyticsData {

@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 import MultipleSelect from "../input/MultipleSelect";
 import FormSubmitBtn from "../button/FormSubmitBtn";
@@ -23,15 +24,35 @@ const style = {
   p: 4
 };
 
-export default function BasicModal({ isModalOpen, onClose }: ModalProps) {
+export default function BasicModal({
+  isModalOpen,
+  onClose,
+  productFormData
+}: ModalProps) {
+  const params = useParams();
   const queryClient = useQueryClient();
-  const { handleSubmit, register } = useForm<AddProductFormType>();
+  const { handleSubmit, register, formState, setError, clearErrors } =
+    useForm<AddProductFormType>({
+      defaultValues: {
+        productTitle: productFormData?.productTitle || undefined,
+        originalPrice: productFormData?.originalPrice || undefined,
+        imageUrl: productFormData?.imageUrl || undefined,
+        discount: productFormData?.discount || undefined
+      }
+    });
   const [open, setOpen] = React.useState(isModalOpen);
-  const [selectValue, setSelectValue] = React.useState<Select>("Clothing");
+  const [selectValue, setSelectValue] = React.useState<Select | null>(null);
   const newProductMutation = useMutation({
     mutationFn: (data: AddProductFormType) => {
-      return axios.post(
-        `${process.env.REACT_APP_FIREBASE_DATA_URL}/products.json`,
+      if (!params.id) {
+        return axios.post(
+          `${process.env.REACT_APP_FIREBASE_DATA_URL}/products.json`,
+          data
+        );
+      }
+
+      return axios.put(
+        `${process.env.REACT_APP_FIREBASE_DATA_URL}/products/${params.id}.json`,
         data
       );
     },
@@ -47,6 +68,7 @@ export default function BasicModal({ isModalOpen, onClose }: ModalProps) {
   };
   const handleSelectChange = (value: Select) => {
     setSelectValue(value);
+    clearErrors("category");
   };
   const submitAddProductForm: SubmitHandler<AddProductFormType> = (data) => {
     const formData = {
@@ -55,7 +77,11 @@ export default function BasicModal({ isModalOpen, onClose }: ModalProps) {
       discount: +data.discount,
       category: selectValue
     };
-    newProductMutation.mutate(formData);
+    if (!formData.category) {
+      setError("category", { message: "Please select an option" });
+      return;
+    }
+    newProductMutation.mutate(formData as AddProductFormType);
   };
 
   return (
@@ -102,6 +128,11 @@ export default function BasicModal({ isModalOpen, onClose }: ModalProps) {
               {...register("imageUrl")}
             />
             <MultipleSelect valueChange={handleSelectChange} />
+            {formState.errors.category && (
+              <p className="form-input-error">
+                {formState.errors.category.message}
+              </p>
+            )}
             <FormSubmitBtn
               btnText="Submit"
               additionalStyles={["bg-theme-yellow"]}
