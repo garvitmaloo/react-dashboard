@@ -11,6 +11,10 @@ import { ProductsDetails } from "../types/prop_types";
 
 export default function AllProductsPage() {
   let allProducts: ProductsDetails[] = [];
+  let filteredProducts: ProductsDetails[] = [];
+  const [selectValue, setSelectValue] = useState(undefined);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const loggedInUser = useSelector((state: any) => state.user);
   const productsQuery = useQuery({
     queryKey: ["Products"],
     queryFn: async () => {
@@ -20,11 +24,13 @@ export default function AllProductsPage() {
       return response.data;
     }
   });
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const loggedInUser = useSelector((state: any) => state.user);
 
   const modalCloseHandler = (value: boolean) => {
     setIsModalOpen(value);
+  };
+
+  const handleSelectChange = (value: any) => {
+    setSelectValue(value);
   };
 
   if (productsQuery.data) {
@@ -32,6 +38,14 @@ export default function AllProductsPage() {
       ...data[1],
       productId: data[0]
     }));
+
+    if (!selectValue) {
+      filteredProducts = allProducts;
+    } else {
+      filteredProducts = allProducts.filter(
+        (product) => product.category === selectValue
+      );
+    }
   }
 
   return (
@@ -41,7 +55,7 @@ export default function AllProductsPage() {
           Showing all products
         </h3>
         <div className="flex flex-col tablets:flex-row gap-2 items-end">
-          <MultipleSelect width={200} />
+          <MultipleSelect width={200} valueChange={handleSelectChange} />
           {loggedInUser.role === "Admin" && (
             <PrimaryBtn
               btnText="Add New Product"
@@ -58,9 +72,15 @@ export default function AllProductsPage() {
       </div>
 
       <section className="flex gap-12 justify-evenly my-6 flex-wrap">
-        {allProducts.map((product) => (
-          <ProductsCard key={product.productId} productDetails={product} />
-        ))}
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <ProductsCard key={product.productId} productDetails={product} />
+          ))
+        ) : (
+          <h1 className="my-5 text-gray-950 dark:text-gray-50 font-bold text-2xl text-center">
+            No products to show in this category.
+          </h1>
+        )}
       </section>
 
       {isModalOpen && (
