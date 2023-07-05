@@ -3,12 +3,14 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import FormSubmitBtn from "../components/button/FormSubmitBtn";
 import { LoginFormTypes } from "../types/hook_types";
 import { User, setUser } from "../store/userSlice";
 
 function LoginPage(): JSX.Element {
+  const [loginError, setLoginError] = useState<string | null>(null);
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -34,13 +36,12 @@ function LoginPage(): JSX.Element {
 
         navigate("/");
         window.location.reload(); // this is needed to refresh the app and reload the app.tsx component for routes to work
+        setLoginError(null);
       } else {
-        // Handle situation
-        console.log("Unable to fetch user data");
+        setLoginError("Login Failed. Unable to fetch user data");
       }
     } catch (err: any) {
-      // Handle Error
-      console.log(err);
+      setLoginError(`Login Failed. Error - ${err.response.data.error.message}`);
     }
   };
 
@@ -101,6 +102,7 @@ function LoginPage(): JSX.Element {
         {errors.password && (
           <p className="form-input-error">{errors.password.message}</p>
         )}
+        {loginError && <p className="form-input-error">{loginError}</p>}
         <FormSubmitBtn btnText="Submit" />
       </form>
     </div>
