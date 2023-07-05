@@ -2,11 +2,15 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 import MultipleSelect from "../input/MultipleSelect";
 import FormSubmitBtn from "../button/FormSubmitBtn";
 import { ModalProps } from "../../types/prop_types";
 import { AddProductFormType } from "../../types/hook_types";
+
+type Select = "Clothing" | "Footwear" | "Accessories" | "Gadgets" | "Utilities";
 
 const style = {
   position: "absolute" as "absolute",
@@ -20,14 +24,28 @@ const style = {
 };
 
 export default function BasicModal({ isModalOpen, onClose }: ModalProps) {
+  const queryClient = useQueryClient();
   const { handleSubmit, register } = useForm<AddProductFormType>();
   const [open, setOpen] = React.useState(isModalOpen);
-  const [selectValue, setSelectValue] = React.useState("");
+  const [selectValue, setSelectValue] = React.useState<Select>("Clothing");
+  const newProductMutation = useMutation({
+    mutationFn: (data: AddProductFormType) => {
+      return axios.post(
+        `${process.env.REACT_APP_FIREBASE_DATA_URL}/products.json`,
+        data
+      );
+    },
+    onSuccess() {
+      queryClient.invalidateQueries(["Products"]);
+      onClose(false);
+    }
+  });
+
   const handleClose = () => {
     onClose(false);
     setOpen(false);
   };
-  const handleSelectChange = (value: string) => {
+  const handleSelectChange = (value: Select) => {
     setSelectValue(value);
   };
   const submitAddProductForm: SubmitHandler<AddProductFormType> = (data) => {
@@ -37,7 +55,7 @@ export default function BasicModal({ isModalOpen, onClose }: ModalProps) {
       discount: +data.discount,
       category: selectValue
     };
-    console.log(formData);
+    newProductMutation.mutate(formData);
   };
 
   return (

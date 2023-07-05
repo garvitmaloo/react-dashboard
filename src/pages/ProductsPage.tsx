@@ -28,7 +28,10 @@ export default function AllProductsPage() {
   };
 
   if (productsQuery.data) {
-    allProducts = productsQuery.data;
+    allProducts = Object.entries(productsQuery.data).map((data: any[]) => ({
+      ...data[1],
+      productId: data[0]
+    }));
   }
 
   return (
