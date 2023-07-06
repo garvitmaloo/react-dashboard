@@ -1,12 +1,15 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
+import { useDispatch } from "react-redux";
+import { setSnackbarOpen } from "../../store/snackbarSlice";
 
 interface State extends SnackbarOrigin {
   open: boolean;
 }
 
 export default function PositionedSnackbar({ message }: { message: string }) {
+  const dispatch = useDispatch();
   const [state, setState] = React.useState<State>({
     open: true,
     vertical: "top",
@@ -16,6 +19,7 @@ export default function PositionedSnackbar({ message }: { message: string }) {
 
   const handleClose = () => {
     setState({ ...state, open: false });
+    dispatch(setSnackbarOpen({ isOpen: false, message: "" }));
   };
 
   return (
