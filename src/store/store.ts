@@ -3,9 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import userReducer from "./userSlice";
 import snackbarReducer from "./snackbarSlice";
+import themeReducers from "./themeSlice";
 
 const store = configureStore({
-  reducer: { user: userReducer, snackbar: snackbarReducer }
+  reducer: {
+    user: userReducer,
+    snackbar: snackbarReducer,
+    theme: themeReducers
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>;

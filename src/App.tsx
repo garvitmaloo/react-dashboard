@@ -17,9 +17,10 @@ import PositionedSnackbar from "./components/snackbar/Snackbar";
 function App() {
   const loggedInUser = useSelector((state: any) => state.user);
   const snackbarState = useSelector((state: any) => state.snackbar);
+  const themeState = useSelector((state: any) => state.theme);
 
   return (
-    <div className="app light">
+    <div className={themeState.appTheme}>
       <Routes>
         <Route
           path="/"

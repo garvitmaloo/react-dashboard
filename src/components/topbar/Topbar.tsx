@@ -5,16 +5,17 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import { MdMenu } from "react-icons/md";
+import { MdMenu, MdLightMode, MdNightlight } from "react-icons/md";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { setUser } from "../../store/userSlice";
+import { toggleTheme } from "../../store/themeSlice";
 
 const pages = ["Notifications", "Messages", "Trends", "Company", "Requests"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -22,6 +23,7 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Topbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const themeState = useSelector((state: any) => state.theme);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -48,6 +50,10 @@ function Topbar() {
       dispatch(setUser(null));
       navigate("/login");
     }
+  };
+
+  const handleThemeToggle = () => {
+    dispatch(toggleTheme());
   };
 
   return (
@@ -183,6 +189,21 @@ function Topbar() {
                   </MenuItem>
                 ))}
               </Menu>
+            </Box>
+            <Box>
+              {themeState.appTheme === "light" ? (
+                <MdNightlight
+                  size={24}
+                  aria-label="Switch to dark mode"
+                  onClick={handleThemeToggle}
+                />
+              ) : (
+                <MdLightMode
+                  size={24}
+                  aria-label="Switch to light mode"
+                  onClick={handleThemeToggle}
+                />
+              )}
             </Box>
           </div>
         </Toolbar>
