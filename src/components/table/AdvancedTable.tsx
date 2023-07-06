@@ -123,7 +123,7 @@ export default function AdvancedTable({
           </strong>
         </span>
         <select
-          className="bg-transparent text-gray-950 dark:text-gray-50 border-[2px] p-1 border-theme-yellow rounded"
+          className="bg-transparent text-gray-950 border-[2px] p-1 border-theme-yellow rounded"
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));

@@ -79,12 +79,12 @@ export default function ProductDetailsPage(): JSX.Element {
         <div className="flex justify-center items-center gap-5">
           <PrimaryBtn
             btnText="Edit Product"
-            additionalStyles={["my-4 bg-theme-yellow"]}
+            additionalStyles={["my-4 bg-theme-yellow text-gray-950"]}
             clickHandler={clickHandler}
           />
           <PrimaryBtn
             btnText="Delete Product"
-            additionalStyles={["block my-4 bg-theme-orange"]}
+            additionalStyles={["block my-4 bg-theme-orange text-gray-950"]}
             clickHandler={deleteHandler}
           />
         </div>

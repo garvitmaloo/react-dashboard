@@ -53,7 +53,7 @@ export default function MultipleSelect({ width = "100%", valueChange }: any) {
     <div className="text-gray-500 dark:text-gray-300">
       <FormControl sx={{ mt: 1, width }}>
         <Select
-          className="dark:border-2 dark:border-gray-100 rounded-lg outline-none w-full"
+          className="dark:border-2 dark:border-gray-100 dark:text-gray-50 rounded-lg outline-none w-full"
           displayEmpty
           value={category}
           onChange={handleChange}

@@ -72,7 +72,13 @@ export default function OrderDetails(): JSX.Element {
       {orderDetails && orderDetails.orderStatus.toLowerCase() === "pending" && (
         <PrimaryBtn
           btnText="Mark as Fulfilled"
-          additionalStyles={["bg-theme-yellow", "block", "mx-auto", "my-5"]}
+          additionalStyles={[
+            "bg-theme-yellow",
+            "block",
+            "mx-auto",
+            "my-5",
+            "text-gray-950"
+          ]}
           clickHandler={orderFulfillHandler}
         />
       )}
