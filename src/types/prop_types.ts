@@ -100,3 +100,15 @@ export interface UserDemographicsData {
   color: string;
   value: number;
 }
+
+export interface User {
+  displayName: string;
+  expiresIn: string;
+  email: string;
+  idToken: string;
+  kind: string;
+  localId: string;
+  refreshToken: string;
+  registered: boolean;
+  role: string;
+}

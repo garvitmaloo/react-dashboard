@@ -2,20 +2,14 @@
 /* eslint-disable import/no-cycle */
 import { createSlice } from "@reduxjs/toolkit";
 
-export interface User {
-  displayName: string;
-  expiresIn: string;
-  email: string;
-  idToken: string;
-  kind: string;
-  localId: string;
-  refreshToken: string;
-  registered: boolean;
-  role: string;
-}
+import { User } from "../types/prop_types";
 
 const existingUser = localStorage.getItem("loggedInUserData");
-const initialState: User | null = existingUser && JSON.parse(existingUser);
+const parsedUserData = existingUser && JSON.parse(existingUser);
+const initialState: User | null = parsedUserData && {
+  ...parsedUserData,
+  role: parsedUserData.email === "admin@shop.com" ? "Admin" : "Subadmin"
+};
 
 const userSlice = createSlice({
   name: "user",

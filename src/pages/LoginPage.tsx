@@ -1,13 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import FormSubmitBtn from "../components/button/FormSubmitBtn";
 import { LoginFormTypes } from "../types/hook_types";
-import { User, setUser } from "../store/userSlice";
 
 function LoginPage(): JSX.Element {
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -17,7 +15,6 @@ function LoginPage(): JSX.Element {
     register,
     formState: { errors }
   } = useForm<LoginFormTypes>();
-  const dispatch = useDispatch();
 
   const submitLoginForm: SubmitHandler<LoginFormTypes> = async (data) => {
     try {
@@ -27,12 +24,7 @@ function LoginPage(): JSX.Element {
       );
 
       if (response.data) {
-        const loggedInData: User = {
-          ...response.data,
-          role: data.email === "admin@shop.com" ? "Admin" : "Subadmin"
-        };
-        localStorage.setItem("loggedInUserData", JSON.stringify(loggedInData));
-        dispatch(setUser(loggedInData));
+        localStorage.setItem("loggedInUserData", JSON.stringify(response.data));
 
         navigate("/");
         window.location.reload(); // this is needed to refresh the app and reload the app.tsx component for routes to work
