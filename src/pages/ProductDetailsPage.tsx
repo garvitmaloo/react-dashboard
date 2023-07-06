@@ -2,16 +2,17 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import BasicModal from "../components/modal/AddProductFormModal";
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import { ProductsDetails } from "../types/prop_types";
-// import PositionedSnackbar from "../components/snackbar/Snackbar";
+import { setSnackbarOpen } from "../store/snackbarSlice";
 
 export default function ProductDetailsPage(): JSX.Element {
   let productDetails = {};
   const params = useParams();
+  const dispatch = useDispatch();
   const userState = useSelector((state: any) => state.user);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -53,7 +54,19 @@ export default function ProductDetailsPage(): JSX.Element {
   };
 
   if (deleteProductMutation.isSuccess) {
+    dispatch(
+      setSnackbarOpen({ isOpen: true, message: "Product Deleted Successfully" })
+    );
     navigate("/products");
+  }
+
+  if (deleteProductMutation.isError) {
+    dispatch(
+      setSnackbarOpen({
+        isOpen: true,
+        message: (deleteProductMutation.error as any).message
+      })
+    );
   }
   return (
     <div>

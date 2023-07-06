@@ -5,11 +5,13 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import MultipleSelect from "../input/MultipleSelect";
 import FormSubmitBtn from "../button/FormSubmitBtn";
 import { ModalProps } from "../../types/prop_types";
 import { AddProductFormType } from "../../types/hook_types";
+import { setSnackbarOpen } from "../../store/snackbarSlice";
 
 type Select = "Clothing" | "Footwear" | "Accessories" | "Gadgets" | "Utilities";
 
@@ -30,6 +32,7 @@ export default function BasicModal({
   productFormData
 }: ModalProps) {
   const params = useParams();
+  const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const { handleSubmit, register, formState, setError, clearErrors } =
     useForm<AddProductFormType>({
@@ -58,9 +61,33 @@ export default function BasicModal({
     },
     onSuccess() {
       queryClient.invalidateQueries(["Products"]);
+      if (!params.id) {
+        dispatch(
+          setSnackbarOpen({
+            isOpen: true,
+            message: "Product added successfully"
+          })
+        );
+      } else {
+        dispatch(
+          setSnackbarOpen({
+            isOpen: true,
+            message: "Product updated successfully"
+          })
+        );
+      }
       onClose(false);
     }
   });
+
+  if (newProductMutation.isError) {
+    dispatch(
+      setSnackbarOpen({
+        isOpen: true,
+        message: (newProductMutation.error as any).message
+      })
+    );
+  }
 
   const handleClose = () => {
     onClose(false);
@@ -74,7 +101,7 @@ export default function BasicModal({
     const formData = {
       ...data,
       originalPrice: +data.originalPrice,
-      discount: +data.discount,
+      discount: data.discount && +data.discount,
       category: selectValue
     };
     if (!formData.category) {
