@@ -2,19 +2,20 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
 
 import BasicModal from "../components/modal/AddProductFormModal";
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import { ProductsDetails } from "../types/prop_types";
 import { setSnackbarOpen } from "../store/snackbarSlice";
 import Spinner from "../components/spinner/Spinner";
+import useAppDispatch from "../hooks/useAppDispatch";
+import useAppSelector from "../hooks/useAppSelector";
 
 export default function ProductDetailsPage(): JSX.Element {
   let productDetails = {};
   const params = useParams();
-  const dispatch = useDispatch();
-  const userState = useSelector((state: any) => state.user);
+  const dispatch = useAppDispatch();
+  const userState = useAppSelector((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const productDetailsQuery = useQuery({
@@ -74,7 +75,7 @@ export default function ProductDetailsPage(): JSX.Element {
   return (
     <div>
       <p>Product Details for product id = {params.id}</p>
-      {userState.role === "Admin" && (
+      {userState?.role === "Admin" && (
         <div className="flex justify-center items-center gap-5">
           <PrimaryBtn
             btnText="Edit Product"

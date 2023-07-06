@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -10,15 +9,17 @@ import BasicModal from "../components/modal/AddProductFormModal";
 import { ProductsDetails } from "../types/prop_types";
 import { setSnackbarOpen } from "../store/snackbarSlice";
 import Spinner from "../components/spinner/Spinner";
+import useAppDispatch from "../hooks/useAppDispatch";
+import useAppSelector from "../hooks/useAppSelector";
 
 export default function AllProductsPage() {
   let allProducts: ProductsDetails[] = [];
   let filteredProducts: ProductsDetails[] = [];
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [selectValue, setSelectValue] = useState(undefined);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const loggedInUser = useSelector((state: any) => state.user);
+  const loggedInUser = useAppSelector((state) => state.user);
   const productsQuery = useQuery({
     queryKey: ["Products"],
     queryFn: async () => {
@@ -72,7 +73,7 @@ export default function AllProductsPage() {
         </h3>
         <div className="flex flex-col tablets:flex-row gap-2 items-end">
           <MultipleSelect width={200} valueChange={handleSelectChange} />
-          {loggedInUser.role === "Admin" && (
+          {loggedInUser?.role === "Admin" && (
             <PrimaryBtn
               btnText="Add New Product"
               clickHandler={() => setIsModalOpen(true)}

@@ -1,18 +1,18 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import { OrdersTableData } from "../types/prop_types";
 import { setSnackbarOpen } from "../store/snackbarSlice";
 import Spinner from "../components/spinner/Spinner";
+import useAppDispatch from "../hooks/useAppDispatch";
 
 export default function OrderDetails(): JSX.Element {
   let orderDetails: OrdersTableData | null = null;
 
   const queryClient = useQueryClient();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const params = useParams();
   const orderDetailsQuery = useQuery({

@@ -6,13 +6,13 @@ import {
 import { createColumnHelper } from "@tanstack/react-table";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 
 import QuickAnalyticsCard from "../components/cards/QuickAnalyticsCard";
 import AdvancedTable from "../components/table/AdvancedTable";
 import { OrdersTableData } from "../types/prop_types";
 import Spinner from "../components/spinner/Spinner";
 import { setSnackbarOpen } from "../store/snackbarSlice";
+import useAppDispatch from "../hooks/useAppDispatch";
 
 const columnHelper = createColumnHelper<OrdersTableData>();
 const columns = [
@@ -46,7 +46,7 @@ const columns = [
 function Orders(): JSX.Element {
   let ordersTableData: OrdersTableData[] = [];
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ordersDataQuery = useQuery({
     queryKey: ["Orders"],
     queryFn: async () => {

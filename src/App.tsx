@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import "./assets/styles/index.css";
 import LoginPage from "./pages/LoginPage";
@@ -13,11 +12,12 @@ import UsersPage from "./pages/UsersPage";
 import useIsAuthorized from "./hooks/useIsAuthorized";
 import Unauthorized from "./pages/Unauthorized";
 import PositionedSnackbar from "./components/snackbar/Snackbar";
+import useAppSelector from "./hooks/useAppSelector";
 
 function App() {
-  const loggedInUser = useSelector((state: any) => state.user);
-  const snackbarState = useSelector((state: any) => state.snackbar);
-  const themeState = useSelector((state: any) => state.theme);
+  const loggedInUser = useAppSelector((state) => state.user);
+  const snackbarState = useAppSelector((state) => state.snackbar);
+  const themeState = useAppSelector((state) => state.theme);
 
   return (
     <div className={themeState.appTheme}>

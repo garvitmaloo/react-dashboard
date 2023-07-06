@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit/dist/createAction";
 
 const initialState = {
   isOpen: false,
@@ -9,7 +10,10 @@ const initialState = {
 const snackbarSlice = createSlice({
   name: "Snackbar",
   reducers: {
-    setSnackbarOpen(state, action) {
+    setSnackbarOpen(
+      state,
+      action: PayloadAction<{ isOpen: boolean; message: string }>
+    ) {
       state.isOpen = action.payload.isOpen;
       state.message = action.payload.message;
     }

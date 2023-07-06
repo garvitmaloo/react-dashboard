@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux";
 import { FaCartShopping, FaUsers, FaCoins } from "react-icons/fa6";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
@@ -12,9 +11,11 @@ import Tab from "../components/tab-component/Tab";
 import { OrdersAnalyticsData, UserDemographicsData } from "../types/prop_types";
 import Spinner from "../components/spinner/Spinner";
 import { setSnackbarOpen } from "../store/snackbarSlice";
+import useAppDispatch from "../hooks/useAppDispatch";
 
 function AnalyticsPage(): JSX.Element {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   let ordersAnalyticsData: OrdersAnalyticsData[] = [];
   let userDemographicsData: UserDemographicsData[] = [];
 
