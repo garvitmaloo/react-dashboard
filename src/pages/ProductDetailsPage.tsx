@@ -8,6 +8,7 @@ import BasicModal from "../components/modal/AddProductFormModal";
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import { ProductsDetails } from "../types/prop_types";
 import { setSnackbarOpen } from "../store/snackbarSlice";
+import Spinner from "../components/spinner/Spinner";
 
 export default function ProductDetailsPage(): JSX.Element {
   let productDetails = {};
@@ -59,7 +60,9 @@ export default function ProductDetailsPage(): JSX.Element {
     );
     navigate("/products");
   }
-
+  if (productDetailsQuery.isLoading) {
+    return <Spinner />;
+  }
   if (deleteProductMutation.isError) {
     dispatch(
       setSnackbarOpen({

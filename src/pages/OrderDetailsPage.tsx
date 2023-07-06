@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import { OrdersTableData } from "../types/prop_types";
 import { setSnackbarOpen } from "../store/snackbarSlice";
+import Spinner from "../components/spinner/Spinner";
 
 export default function OrderDetails(): JSX.Element {
   let orderDetails: OrdersTableData | null = null;
@@ -53,7 +54,9 @@ export default function OrderDetails(): JSX.Element {
   if (orderDetailsQuery.data) {
     orderDetails = orderDetailsQuery.data;
   }
-
+  if (orderDetailsQuery.isLoading) {
+    return <Spinner />;
+  }
   if (orderDetailsQuery.isError) {
     dispatch(
       setSnackbarOpen({

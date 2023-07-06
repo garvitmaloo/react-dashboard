@@ -1,4 +1,4 @@
-import React from "react";
+import { useDispatch } from "react-redux";
 import { FaCartShopping, FaUsers, FaCoins } from "react-icons/fa6";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
@@ -10,8 +10,11 @@ import AreaGraph from "../components/area-graph/AreaGraph";
 import PieGraph from "../components/area-graph/PieGraph";
 import Tab from "../components/tab-component/Tab";
 import { OrdersAnalyticsData, UserDemographicsData } from "../types/prop_types";
+import Spinner from "../components/spinner/Spinner";
+import { setSnackbarOpen } from "../store/snackbarSlice";
 
 function AnalyticsPage(): JSX.Element {
+  const dispatch = useDispatch();
   let ordersAnalyticsData: OrdersAnalyticsData[] = [];
   let userDemographicsData: UserDemographicsData[] = [];
 
@@ -29,6 +32,17 @@ function AnalyticsPage(): JSX.Element {
   if (analyticsQuery.data) {
     ordersAnalyticsData = analyticsQuery.data.orders;
     userDemographicsData = analyticsQuery.data.userDemographics;
+  }
+  if (analyticsQuery.isLoading) {
+    return <Spinner />;
+  }
+  if (analyticsQuery.isError) {
+    dispatch(
+      setSnackbarOpen({
+        isOpen: true,
+        message: (analyticsQuery.error as any).message
+      })
+    );
   }
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-950 dark:text-gray-50">

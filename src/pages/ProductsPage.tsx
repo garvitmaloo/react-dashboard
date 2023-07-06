@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -8,10 +8,14 @@ import ProductsCard from "../components/cards/ProductsCard";
 import MultipleSelect from "../components/input/MultipleSelect";
 import BasicModal from "../components/modal/AddProductFormModal";
 import { ProductsDetails } from "../types/prop_types";
+import { setSnackbarOpen } from "../store/snackbarSlice";
+import Spinner from "../components/spinner/Spinner";
 
 export default function AllProductsPage() {
   let allProducts: ProductsDetails[] = [];
   let filteredProducts: ProductsDetails[] = [];
+
+  const dispatch = useDispatch();
   const [selectValue, setSelectValue] = useState(undefined);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const loggedInUser = useSelector((state: any) => state.user);
@@ -46,6 +50,18 @@ export default function AllProductsPage() {
         (product) => product.category === selectValue
       );
     }
+  }
+  if (productsQuery.isLoading) {
+    return <Spinner />;
+  }
+
+  if (productsQuery.isError) {
+    dispatch(
+      setSnackbarOpen({
+        isOpen: true,
+        message: (productsQuery.error as any).message
+      })
+    );
   }
 
   return (

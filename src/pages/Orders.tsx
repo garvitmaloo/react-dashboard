@@ -6,10 +6,13 @@ import {
 import { createColumnHelper } from "@tanstack/react-table";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 import QuickAnalyticsCard from "../components/cards/QuickAnalyticsCard";
 import AdvancedTable from "../components/table/AdvancedTable";
 import { OrdersTableData } from "../types/prop_types";
+import Spinner from "../components/spinner/Spinner";
+import { setSnackbarOpen } from "../store/snackbarSlice";
 
 const columnHelper = createColumnHelper<OrdersTableData>();
 const columns = [
@@ -42,7 +45,9 @@ const columns = [
 
 function Orders(): JSX.Element {
   let ordersTableData: OrdersTableData[] = [];
-  const ordersData = useQuery({
+
+  const dispatch = useDispatch();
+  const ordersDataQuery = useQuery({
     queryKey: ["Orders"],
     queryFn: async () => {
       const response = await axios.get(
@@ -52,8 +57,19 @@ function Orders(): JSX.Element {
     }
   });
 
-  if (ordersData.data) {
-    ordersTableData = ordersData.data;
+  if (ordersDataQuery.data) {
+    ordersTableData = ordersDataQuery.data;
+  }
+  if (ordersDataQuery.isLoading) {
+    return <Spinner />;
+  }
+  if (ordersDataQuery.isError) {
+    dispatch(
+      setSnackbarOpen({
+        isOpen: true,
+        message: (ordersDataQuery.error as any).message
+      })
+    );
   }
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-950 dark:text-gray-50">
