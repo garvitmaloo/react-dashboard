@@ -12,9 +12,11 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import UsersPage from "./pages/UsersPage";
 import useIsAuthorized from "./hooks/useIsAuthorized";
 import Unauthorized from "./pages/Unauthorized";
+import PositionedSnackbar from "./components/snackbar/Snackbar";
 
 function App() {
   const loggedInUser = useSelector((state: any) => state.user);
+  const snackbarState = useSelector((state: any) => state.snackbar);
 
   return (
     <div className="app light">
@@ -56,6 +58,10 @@ function App() {
         )}
         <Route path="*" element={<Unauthorized />} />
       </Routes>
+
+      {snackbarState.isOpen && (
+        <PositionedSnackbar message={snackbarState.message} />
+      )}
     </div>
   );
 }
