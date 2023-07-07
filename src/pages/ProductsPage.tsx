@@ -1,16 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import ProductsCard from "../components/cards/ProductsCard";
 import MultipleSelect from "../components/input/MultipleSelect";
-import BasicModal from "../components/modal/AddProductFormModal";
 import { ProductsDetails } from "../types/prop_types";
 import { setSnackbarOpen } from "../store/snackbarSlice";
 import Spinner from "../components/spinner/Spinner";
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
+
+const BasicModal = React.lazy(
+  () => import("../components/modal/AddProductFormModal")
+);
 
 export default function AllProductsPage() {
   let allProducts: ProductsDetails[] = [];
