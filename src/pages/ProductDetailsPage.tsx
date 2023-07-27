@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -14,6 +14,7 @@ import useAppSelector from "../hooks/useAppSelector";
 export default function ProductDetailsPage(): JSX.Element {
   let productDetails = {};
   const params = useParams();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -65,12 +66,7 @@ export default function ProductDetailsPage(): JSX.Element {
     return <Spinner />;
   }
   if (deleteProductMutation.isError) {
-    dispatch(
-      setSnackbarOpen({
-        isOpen: true,
-        message: (deleteProductMutation.error as any).message
-      })
-    );
+    navigate("/error", { state: { prevUrl: location.pathname } });
   }
   return (
     <div>

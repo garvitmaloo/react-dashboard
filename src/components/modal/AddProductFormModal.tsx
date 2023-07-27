@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import MultipleSelect from "../input/MultipleSelect";
@@ -32,6 +32,8 @@ export default function BasicModal({
   productFormData
 }: ModalProps) {
   const params = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const { handleSubmit, register, formState, setError, clearErrors } =
@@ -81,12 +83,7 @@ export default function BasicModal({
   });
 
   if (newProductMutation.isError) {
-    dispatch(
-      setSnackbarOpen({
-        isOpen: true,
-        message: (newProductMutation.error as any).message
-      })
-    );
+    navigate("/error", { state: { prevUrl: location.pathname } });
   }
 
   const handleClose = () => {
