@@ -1,6 +1,24 @@
-# Getting Started with Create React App
+# About this project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+I made this project to learn react and its ecosystem. This is basically the admin side of an E-Commerce store with some basic CRUD operations. Firebase has been used to provide backend and DB functionality. Frontend has been made with React-Typescript and a couple of popular libraries on the react ecosystem. Some of the are -
+
+1. Redux toolkit
+2. React query
+3. React table
+4. Recharts
+5. Material UI
+6. React router DOM
+7. Tailwind CSS
+
+And I have also used some tools like ESLint, prettier, TypeScript of course and husky.
+
+**Here is the [deployed project link](https://react-dashboard-eosin-psi.vercel.app)**
+
+You can login using either of the following credentials -
+Admin login - Email: admin@shop.com | Password: Admin@123
+Subadmin login - Email: subadmin@shop.com | Password: Subadmin@123
+
+For convenience, I have diabled all the DB writing operations. You can only view the existing data. Making any POST/PUT/DELETE request will result in an error and you will be redirected to error page.
 
 ## Available Scripts
 
