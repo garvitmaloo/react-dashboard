@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import useIsAuthorized from "./hooks/useIsAuthorized";
 import useAppSelector from "./hooks/useAppSelector";
 import Spinner from "./components/spinner/Spinner";
+import ErrorPage from "./pages/ErrorPage";
 
 const LoggedInPagesLayout = React.lazy(
   () => import("./layouts/LoggedInPagesLayout")
@@ -67,6 +68,7 @@ function App() {
               <Route index element={<UsersPage />} />
             </Route>
           )}
+          <Route path="/error" element={<ErrorPage />} />
           <Route path="*" element={<Unauthorized />} />
         </Routes>
       </Suspense>
