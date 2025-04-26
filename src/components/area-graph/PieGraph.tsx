@@ -21,7 +21,7 @@ export default function PieGraph({
             nameKey={nameKey}
             dataKey={dataKey}
           >
-            {graphData.map((entry) => (
+            {graphData?.map((entry) => (
               <Cell
                 key={`cell-${entry.title}`}
                 stroke="none"
@@ -33,7 +33,7 @@ export default function PieGraph({
         </PieChart>
       </ResponsiveContainer>
       <div className="min-w-[125px]">
-        {graphData.map((item) => (
+        {graphData?.map((item) => (
           <div key={item.title}>
             <span
               className="inline-block h-[10px] w-[10px] me-3 rounded-md"

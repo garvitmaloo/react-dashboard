@@ -33,7 +33,7 @@ export interface AdvancedAnalyticsCardProps {
 }
 
 export interface AreaGraphProps {
-  graphData: any[];
+  graphData?: any[];
   areaFillColor: string;
   XAxisKey: string;
   YAxisKey: string;
@@ -42,7 +42,7 @@ export interface AreaGraphProps {
 }
 
 export interface PieGraphProps {
-  graphData: any[];
+  graphData?: any[];
   graphWidth?: number | string;
   graphHeight?: number | string;
   nameKey: string;

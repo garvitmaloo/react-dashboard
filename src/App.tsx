@@ -29,6 +29,9 @@ function App() {
   const snackbarState = useAppSelector((state) => state.snackbar);
   const themeState = useAppSelector((state) => state.theme);
 
+  const isAdmin = useIsAuthorized("Admin");
+  const isSubadmin = useIsAuthorized("Subadmin");
+
   return (
     <div className={themeState.appTheme}>
       <Suspense fallback={<Spinner />}>
@@ -46,24 +49,24 @@ function App() {
             }
           />
           <Route path="/login" element={<LoginPage />} />
-          {useIsAuthorized("Admin") && (
+          {isAdmin && (
             <Route path="/analytics" element={<LoggedInPagesLayout />}>
               <Route index element={<AnalyticsPage />} />
             </Route>
           )}
-          {useIsAuthorized("Subadmin") && (
+          {isSubadmin && (
             <Route path="/orders" element={<LoggedInPagesLayout />}>
               <Route index element={<Orders />} />
               <Route path="/orders/:id" element={<OrderDetails />} />
             </Route>
           )}
-          {useIsAuthorized("Subadmin") && (
+          {isSubadmin && (
             <Route path="/products" element={<LoggedInPagesLayout />}>
               <Route index element={<AllProductsPage />} />
               <Route path="/products/:id" element={<ProductDetailsPage />} />
             </Route>
           )}
-          {useIsAuthorized("Admin") && (
+          {isAdmin && (
             <Route path="/users" element={<LoggedInPagesLayout />}>
               <Route index element={<UsersPage />} />
             </Route>
