@@ -5,7 +5,6 @@ import {
 } from "react-icons/bs";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 import QuickAnalyticsCard from "../components/cards/QuickAnalyticsCard";
 import AdvancedTable from "../components/table/AdvancedTable";
@@ -13,6 +12,7 @@ import { OrdersTableData } from "../types/prop_types";
 import Spinner from "../components/spinner/Spinner";
 import { setSnackbarOpen } from "../store/snackbarSlice";
 import useAppDispatch from "../hooks/useAppDispatch";
+import getAllOrders from "../api/orders";
 
 const columnHelper = createColumnHelper<OrdersTableData>();
 const columns = [
@@ -44,25 +44,16 @@ const columns = [
 ];
 
 function Orders(): JSX.Element {
-  let ordersTableData: OrdersTableData[] = [];
-
   const dispatch = useAppDispatch();
   const ordersDataQuery = useQuery({
     queryKey: ["Orders"],
-    queryFn: async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_FIREBASE_DATA_URL}/orders.json`
-      );
-      return response.data;
-    }
+    queryFn: getAllOrders
   });
 
-  if (ordersDataQuery.data) {
-    ordersTableData = ordersDataQuery.data;
-  }
   if (ordersDataQuery.isLoading) {
     return <Spinner />;
   }
+
   if (ordersDataQuery.isError) {
     dispatch(
       setSnackbarOpen({
@@ -71,6 +62,7 @@ function Orders(): JSX.Element {
       })
     );
   }
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-950 dark:text-gray-50">
       <section id="quick-analytics" className="pt-5">
@@ -97,9 +89,11 @@ function Orders(): JSX.Element {
         </div>
       </section>
 
-      <section className="orders-details">
-        <AdvancedTable data={ordersTableData} columns={columns} />
-      </section>
+      {ordersDataQuery.data && (
+        <section className="orders-details">
+          <AdvancedTable data={ordersDataQuery.data} columns={columns} />
+        </section>
+      )}
     </div>
   );
 }

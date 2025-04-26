@@ -75,7 +75,7 @@ export default function AdvancedTable({
             <tr
               key={row.id}
               onClick={() => navigate(row.getValue("orderId"))}
-              className="odd:bg-gray-100 dark:odd:bg-gray-800"
+              className="odd:bg-gray-100 dark:odd:bg-gray-800 cursor-pointer"
             >
               {row.getVisibleCells().map((cell) => (
                 <td
