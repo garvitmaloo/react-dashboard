@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 import PrimaryBtn from "../components/button/PrimaryBtn";
 import ProductsCard from "../components/cards/ProductsCard";
@@ -10,6 +9,7 @@ import { setSnackbarOpen } from "../store/snackbarSlice";
 import Spinner from "../components/spinner/Spinner";
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
+import getAllProducts from "../api/products";
 
 const BasicModal = React.lazy(
   () => import("../components/modal/AddProductFormModal")
@@ -20,25 +20,21 @@ export default function AllProductsPage() {
   let filteredProducts: ProductsDetails[] = [];
 
   const dispatch = useAppDispatch();
-  const [selectValue, setSelectValue] = useState(undefined);
+  const [filterValue, setFilterValue] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const loggedInUser = useAppSelector((state) => state.user);
+
   const productsQuery = useQuery({
     queryKey: ["Products"],
-    queryFn: async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_FIREBASE_DATA_URL}/products.json`
-      );
-      return response.data;
-    }
+    queryFn: getAllProducts
   });
 
   const modalCloseHandler = (value: boolean) => {
     setIsModalOpen(value);
   };
 
-  const handleSelectChange = (value: any) => {
-    setSelectValue(value);
+  const handleSelectChange = (value: string) => {
+    setFilterValue(value);
   };
 
   if (productsQuery.data) {
@@ -47,14 +43,15 @@ export default function AllProductsPage() {
       productId: data[0]
     }));
 
-    if (!selectValue) {
+    if (!filterValue) {
       filteredProducts = allProducts;
     } else {
       filteredProducts = allProducts.filter(
-        (product) => product.category === selectValue
+        (product) => product.category === filterValue
       );
     }
   }
+
   if (productsQuery.isLoading) {
     return <Spinner />;
   }

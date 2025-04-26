@@ -78,6 +78,16 @@ export type ProductCardProps = {
   productDetails: ProductsDetails;
 };
 
+export interface ProductDetailsDTO {
+  [productId: string]: {
+    imageUrl: string;
+    discount?: number;
+    originalPrice: number;
+    productTitle: string;
+    category: "Clothing" | "Footwear" | "Accessories" | "Gadgets" | "Utilities";
+  };
+}
+
 export interface ModalProps {
   onClose: (val: boolean) => void;
   isModalOpen: boolean;
