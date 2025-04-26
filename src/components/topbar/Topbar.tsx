@@ -57,7 +57,7 @@ function Topbar() {
   };
 
   return (
-    <AppBar position="sticky" style={{ zIndex: 1000 }}>
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters style={{ justifyContent: "space-between" }}>
           <Typography

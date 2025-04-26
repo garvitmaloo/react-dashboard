@@ -43,7 +43,7 @@ function LoggedInPagesLayout(): JSX.Element {
         />
       </aside>
       <main className="relative grow h-full overflow-auto bg-white dark:bg-gray-900 text-gray-950 dark:text-gray-50">
-        <nav className="sticky top-0 left-0 w-full h-14 shadow-md mb-4">
+        <nav className="sticky top-0 left-0 w-full h-14 shadow-md mb-4 z-10">
           <Topbar />
         </nav>
         <section className="px-4">
